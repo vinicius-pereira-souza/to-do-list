@@ -1,0 +1,23 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer components {
+  .box-note {
+    @apply mt-4 p-2 rounded flex items-center gap-2 bg-gray-600;
+  }
+
+  .input-note {
+    @apply w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-600 ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500;
+  }
+
+  .text-note {
+    @apply flex-1 text-slate-100;
+  }
+
+  .button-note {
+    @apply text-white py-2 px-7 rounded-md bg-red-600 hover:bg-red-500 transition-all;
+  }
+}
