@@ -1,4 +1,5 @@
 const container = document.querySelector("main");
+const emptyContainer = document.querySelector(".empty-box");
 const form = document.querySelector("form");
 const input = document.getElementById("textContent") as HTMLInputElement | null;
 
@@ -8,9 +9,12 @@ interface Note {
   id: string;
 }
 
+type hasNote = string | null;
 let notes: Note[] = [];
 
-function handleSubmit(e: any) {
+form!.addEventListener("submit", handleSubmitNote);
+
+function handleSubmitNote(e: { preventDefault: () => void }) {
   e.preventDefault();
 
   if (!input!.value) {
@@ -25,23 +29,38 @@ function handleSubmit(e: any) {
       .substring(1),
   };
 
-  notes = [...notes, note];
+  let newArr = [...notes, note];
+  localStorage.setItem("notes", JSON.stringify(newArr));
+  checkHaveNotes();
+  renderAllNote();
+
   input!.value = "";
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-  container!.appendChild(createNoteComponent(note.text, note.id));
 }
 
-function getAllNote(): void {
-  const allNotes: any = localStorage.getItem("notes");
-  const notesArr = JSON.parse(allNotes);
+function checkHaveNotes(): boolean {
+  const arrNotes = getAllNotes();
 
-  notesArr?.forEach((note: Note) => {
-    container!.appendChild(createNoteComponent(note.text, note.id));
-  });
+  if (arrNotes?.length) {
+    emptyContainer!.classList.remove("show-box");
+    return true;
+  } else {
+    emptyContainer!.classList.add("show-box");
+    return false;
+  }
 }
 
-function createNoteComponent(text: string, id: string): HTMLDivElement {
+function getAllNotes(): Note[] {
+  // @ts-ignore
+  const notesArr: Note[] = JSON.parse(localStorage.getItem("notes"));
+
+  return notesArr;
+}
+
+function createNoteComponent(
+  text: string,
+  id: string,
+  check?: boolean,
+): HTMLDivElement {
   const div = document.createElement("div");
   const p = document.createElement("p");
   const input = document.createElement("input");
@@ -51,11 +70,15 @@ function createNoteComponent(text: string, id: string): HTMLDivElement {
   p.textContent = text;
   button.textContent = "Delete";
 
-  button.addEventListener("click", (e: MouseEvent) => {
+  button.addEventListener("click", (e) => {
     deleteNote(id);
   });
 
-  input.addEventListener("click", (e: MouseEvent) => {
+  if (check) {
+    input.checked = check;
+  }
+
+  input.addEventListener("change", (e) => {
     const target = e.currentTarget as HTMLInputElement;
 
     if (target?.checked) {
@@ -80,13 +103,35 @@ function createNoteComponent(text: string, id: string): HTMLDivElement {
   return div;
 }
 
-function deleteNote(id: string): void {
-  const allNotes: any = localStorage.getItem("notes");
-  const notesArr = JSON.parse(allNotes);
+function renderAllNote(): void {
+  const notes = getAllNotes();
 
-  notes = notesArr.filter((note: Note) => note.id !== id);
+  [...notes].forEach((note: any) => {
+    container!.appendChild(createNoteComponent(note.text, note.id, note.check));
+  });
+}
+
+function deleteNote(id: string) {
+  const note = document.getElementById(id);
+  let notes = getAllNotes();
+
+  notes = notes.filter((note: any) => note.id !== id);
+  localStorage.setItem("notes", JSON.stringify(notes));
+
+  note?.remove();
+  checkHaveNotes();
+}
+
+function checkNote(id: string, checked: boolean) {
+  let notes = getAllNotes();
+
+  notes = notes.filter((note: any) => {
+    if (note.id === id) {
+    }
+  });
+
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
-getAllNote();
-form!.addEventListener("submit", handleSubmit);
+checkHaveNotes();
+renderAllNote();

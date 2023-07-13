@@ -1,9 +1,11 @@
 "use strict";
 const container = document.querySelector("main");
+const emptyContainer = document.querySelector(".empty-box");
 const form = document.querySelector("form");
 const input = document.getElementById("textContent");
 let notes = [];
-function handleSubmit(e) {
+form.addEventListener("submit", handleSubmitNote);
+function handleSubmitNote(e) {
     e.preventDefault();
     if (!input.value) {
         return;
@@ -15,19 +17,29 @@ function handleSubmit(e) {
             .toString(16)
             .substring(1),
     };
-    notes = [...notes, note];
+    let newArr = [...notes, note];
+    localStorage.setItem("notes", JSON.stringify(newArr));
+    checkHaveNotes();
+    renderAllNote();
     input.value = "";
-    localStorage.setItem("notes", JSON.stringify(notes));
-    container.appendChild(createNoteComponent(note.text, note.id));
 }
-function getAllNote() {
-    const allNotes = localStorage.getItem("notes");
-    const notesArr = JSON.parse(allNotes);
-    notesArr?.forEach((note) => {
-        container.appendChild(createNoteComponent(note.text, note.id));
-    });
+function checkHaveNotes() {
+    const arrNotes = getAllNotes();
+    if (arrNotes?.length) {
+        emptyContainer.classList.remove("show-box");
+        return true;
+    }
+    else {
+        emptyContainer.classList.add("show-box");
+        return false;
+    }
 }
-function createNoteComponent(text, id) {
+function getAllNotes() {
+    // @ts-ignore
+    const notesArr = JSON.parse(localStorage.getItem("notes"));
+    return notesArr;
+}
+function createNoteComponent(text, id, check) {
     const div = document.createElement("div");
     const p = document.createElement("p");
     const input = document.createElement("input");
@@ -38,7 +50,10 @@ function createNoteComponent(text, id) {
     button.addEventListener("click", (e) => {
         deleteNote(id);
     });
-    input.addEventListener("click", (e) => {
+    if (check) {
+        input.checked = check;
+    }
+    input.addEventListener("change", (e) => {
         const target = e.currentTarget;
         if (target?.checked) {
             p.classList.add("line-through");
@@ -59,11 +74,27 @@ function createNoteComponent(text, id) {
     div.appendChild(button);
     return div;
 }
+function renderAllNote() {
+    const notes = getAllNotes();
+    [...notes].forEach((note) => {
+        container.appendChild(createNoteComponent(note.text, note.id, note.check));
+    });
+}
 function deleteNote(id) {
-    const allNotes = localStorage.getItem("notes");
-    const notesArr = JSON.parse(allNotes);
-    notes = notesArr.filter((note) => note.id !== id);
+    const note = document.getElementById(id);
+    let notes = getAllNotes();
+    notes = notes.filter((note) => note.id !== id);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    note?.remove();
+    checkHaveNotes();
+}
+function checkNote(id, checked) {
+    let notes = getAllNotes();
+    notes = notes.filter((note) => {
+        if (note.id === id) {
+        }
+    });
     localStorage.setItem("notes", JSON.stringify(notes));
 }
-getAllNote();
-form.addEventListener("submit", handleSubmit);
+checkHaveNotes();
+renderAllNote();

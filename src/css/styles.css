@@ -556,6 +556,29 @@ video {
   }
 }
 
+.empty-box {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+  padding: 0.5rem;
+  display: none;
+  justify-content: center;
+  --tw-bg-opacity: 1;
+  background-color: rgb(51 65 85 / var(--tw-bg-opacity));
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity));
+}
+
+.empty-box.show-box {
+  display: flex;
+  justify-content: center;
+}
+
 .box-note {
   margin-top: 1rem;
   display: flex;
