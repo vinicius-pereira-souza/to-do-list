@@ -17,8 +17,8 @@ function handleSubmitNote(e) {
             .toString(16)
             .substring(1),
     };
-    notes = [...notes, note];
-    localStorage.setItem("notes", JSON.stringify(notes));
+    let newArr = [...notes, note];
+    localStorage.setItem("notes", JSON.stringify(newArr));
     checkHaveNotes();
     renderAllNote();
     input.value = "";
@@ -47,6 +47,20 @@ function createNoteComponent(text, id) {
     input.setAttribute("type", "checkbox");
     p.textContent = text;
     button.textContent = "Delete";
+    button.addEventListener("click", (e) => {
+        deleteNote(id);
+    });
+    input.addEventListener("change", (e) => {
+        const target = e.currentTarget;
+        if (target?.checked) {
+            p.classList.add("line-through");
+            p.classList.add("text-zinc-800");
+        }
+        else {
+            p.classList.remove("line-through");
+            p.classList.remove("text-zinc-800");
+        }
+    });
     div.classList.add("box-note");
     div.setAttribute("id", id);
     input.classList.add("input-note");
@@ -62,6 +76,13 @@ function renderAllNote() {
     [...notes].forEach((note) => {
         container.appendChild(createNoteComponent(note.text, note.id));
     });
+}
+function deleteNote(id) {
+    const note = document.getElementById(id);
+    let notes = getAllNotes();
+    notes = notes.filter((note) => note.id !== id);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    note?.remove();
 }
 checkHaveNotes();
 renderAllNote();

@@ -29,8 +29,8 @@ function handleSubmitNote(e: { preventDefault: () => void }) {
       .substring(1),
   };
 
-  notes = [...notes, note];
-  localStorage.setItem("notes", JSON.stringify(notes));
+  let newArr = [...notes, note];
+  localStorage.setItem("notes", JSON.stringify(newArr));
   checkHaveNotes();
   renderAllNote();
 
@@ -66,6 +66,22 @@ function createNoteComponent(text: string, id: string): HTMLDivElement {
   p.textContent = text;
   button.textContent = "Delete";
 
+  button.addEventListener("click", (e) => {
+    deleteNote(id);
+  });
+
+  input.addEventListener("change", (e) => {
+    const target = e.currentTarget as HTMLInputElement;
+
+    if (target?.checked) {
+      p.classList.add("line-through");
+      p.classList.add("text-zinc-800");
+    } else {
+      p.classList.remove("line-through");
+      p.classList.remove("text-zinc-800");
+    }
+  });
+
   div.classList.add("box-note");
   div.setAttribute("id", id);
   input.classList.add("input-note");
@@ -85,6 +101,16 @@ function renderAllNote(): void {
   [...notes].forEach((note: any) => {
     container!.appendChild(createNoteComponent(note.text, note.id));
   });
+}
+
+function deleteNote(id: string) {
+  const note = document.getElementById(id);
+  let notes = getAllNotes();
+
+  notes = notes.filter((note: any) => note.id !== id);
+  localStorage.setItem("notes", JSON.stringify(notes));
+
+  note?.remove();
 }
 
 checkHaveNotes();
