@@ -5,6 +5,14 @@
 @tailwind utilities;
 
 @layer components {
+  .empty-box {
+    @apply box-note hidden bg-slate-700 justify-center text-slate-500 text-lg;
+  }
+
+  .empty-box.show-box {
+    @apply block;
+  }
+
   .box-note {
     @apply mt-4 p-2 rounded flex items-center gap-2 bg-gray-600;
   }
