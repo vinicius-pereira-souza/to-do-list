@@ -39,7 +39,7 @@ function getAllNotes() {
     const notesArr = JSON.parse(localStorage.getItem("notes"));
     return notesArr;
 }
-function createNoteComponent(text, id) {
+function createNoteComponent(text, id, check) {
     const div = document.createElement("div");
     const p = document.createElement("p");
     const input = document.createElement("input");
@@ -50,6 +50,9 @@ function createNoteComponent(text, id) {
     button.addEventListener("click", (e) => {
         deleteNote(id);
     });
+    if (check) {
+        input.checked = check;
+    }
     input.addEventListener("change", (e) => {
         const target = e.currentTarget;
         if (target?.checked) {
@@ -74,7 +77,7 @@ function createNoteComponent(text, id) {
 function renderAllNote() {
     const notes = getAllNotes();
     [...notes].forEach((note) => {
-        container.appendChild(createNoteComponent(note.text, note.id));
+        container.appendChild(createNoteComponent(note.text, note.id, note.check));
     });
 }
 function deleteNote(id) {
@@ -83,6 +86,15 @@ function deleteNote(id) {
     notes = notes.filter((note) => note.id !== id);
     localStorage.setItem("notes", JSON.stringify(notes));
     note?.remove();
+    checkHaveNotes();
+}
+function checkNote(id, checked) {
+    let notes = getAllNotes();
+    notes = notes.filter((note) => {
+        if (note.id === id) {
+        }
+    });
+    localStorage.setItem("notes", JSON.stringify(notes));
 }
 checkHaveNotes();
 renderAllNote();
