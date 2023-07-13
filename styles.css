@@ -14,7 +14,7 @@
   }
 
   .text-note {
-    @apply flex-1 text-slate-100;
+    @apply flex-1 text-slate-100 transition-all;
   }
 
   .button-note {

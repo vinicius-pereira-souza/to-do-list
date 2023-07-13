@@ -41,10 +41,12 @@ function createNoteComponent(text, id) {
     input.addEventListener("click", (e) => {
         const target = e.currentTarget;
         if (target?.checked) {
-            console.log("sim");
+            p.classList.add("line-through");
+            p.classList.add("text-zinc-800");
         }
         else {
-            console.log("não");
+            p.classList.remove("line-through");
+            p.classList.remove("text-zinc-800");
         }
     });
     div.classList.add("box-note");

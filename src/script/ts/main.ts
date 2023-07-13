@@ -59,9 +59,11 @@ function createNoteComponent(text: string, id: string): HTMLDivElement {
     const target = e.currentTarget as HTMLInputElement;
 
     if (target?.checked) {
-      console.log("sim");
+      p.classList.add("line-through");
+      p.classList.add("text-zinc-800");
     } else {
-      console.log("não");
+      p.classList.remove("line-through");
+      p.classList.remove("text-zinc-800");
     }
   });
 
