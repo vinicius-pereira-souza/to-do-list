@@ -10,7 +10,7 @@
   }
 
   .empty-box.show-box {
-    @apply block;
+    @apply flex justify-center;
   }
 
   .box-note {

@@ -1,4 +1,5 @@
 const container = document.querySelector("main");
+const emptyContainer = document.querySelector(".empty-box");
 const form = document.querySelector("form");
 const input = document.getElementById("textContent") as HTMLInputElement | null;
 
@@ -8,85 +9,23 @@ interface Note {
   id: string;
 }
 
-let notes: Note[] = [];
+type hasNote = string | null;
 
-function handleSubmit(e: any) {
-  e.preventDefault();
+function checkHaveNotes(): void {
+  const arrNotes = getAllNotes();
 
-  if (!input!.value) {
-    return;
+  if (arrNotes?.length) {
+    emptyContainer!.classList.remove("show-box");
+  } else {
+    emptyContainer!.classList.add("show-box");
   }
-
-  const note = {
-    text: input!.value,
-    check: false,
-    id: Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1),
-  };
-
-  notes = [...notes, note];
-  input!.value = "";
-
-  localStorage.setItem("notes", JSON.stringify(notes));
-  container!.appendChild(createNoteComponent(note.text, note.id));
 }
 
-function getAllNote(): void {
-  const allNotes: any = localStorage.getItem("notes");
-  const notesArr = JSON.parse(allNotes);
+function getAllNotes(): Note[] {
+  // @ts-ignore
+  const notesArr: Note[] = JSON.parse(localStorage.getItem("notes"));
 
-  notesArr?.forEach((note: Note) => {
-    container!.appendChild(createNoteComponent(note.text, note.id));
-  });
+  return notesArr;
 }
 
-function createNoteComponent(text: string, id: string): HTMLDivElement {
-  const div = document.createElement("div");
-  const p = document.createElement("p");
-  const input = document.createElement("input");
-  const button = document.createElement("button");
-
-  input.setAttribute("type", "checkbox");
-  p.textContent = text;
-  button.textContent = "Delete";
-
-  button.addEventListener("click", (e: MouseEvent) => {
-    deleteNote(id);
-  });
-
-  input.addEventListener("click", (e: MouseEvent) => {
-    const target = e.currentTarget as HTMLInputElement;
-
-    if (target?.checked) {
-      p.classList.add("line-through");
-      p.classList.add("text-zinc-800");
-    } else {
-      p.classList.remove("line-through");
-      p.classList.remove("text-zinc-800");
-    }
-  });
-
-  div.classList.add("box-note");
-  div.setAttribute("id", id);
-  input.classList.add("input-note");
-  p.classList.add("text-note");
-  button.classList.add("button-note");
-
-  div.appendChild(input);
-  div.appendChild(p);
-  div.appendChild(button);
-
-  return div;
-}
-
-function deleteNote(id: string): void {
-  const allNotes: any = localStorage.getItem("notes");
-  const notesArr = JSON.parse(allNotes);
-
-  notes = notesArr.filter((note: Note) => note.id !== id);
-  localStorage.setItem("notes", JSON.stringify(notes));
-}
-
-getAllNote();
-form!.addEventListener("submit", handleSubmit);
+checkHaveNotes();
