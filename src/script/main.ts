@@ -111,9 +111,14 @@ function createNoteComponent(
 function renderAllNote(): void {
   const notes = getAllNotes();
 
-  notes?.forEach((note: any) => {
-    container!.appendChild(createNoteComponent(note.text, note.id, note.check));
-  });
+  if (notes.length > 0) {
+    notes?.forEach((note: any) => {
+      container!.appendChild(
+        createNoteComponent(note.text, note.id, note.check),
+      );
+    });
+  }
+  checkHaveNotes();
 }
 
 function deleteNote(id: string) {
