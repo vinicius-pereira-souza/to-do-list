@@ -39,8 +39,11 @@ function checkHaveNotes() {
     }
 }
 function getAllNotes() {
-    // @ts-ignore
-    const notesArr = JSON.parse(localStorage.getItem("notes"));
+    const notes = localStorage.getItem("notes");
+    let notesArr;
+    if (notes) {
+        notesArr = JSON.parse(notes);
+    }
     return notesArr;
 }
 function createNoteComponent(text, id, check) {
