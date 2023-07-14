@@ -56,8 +56,12 @@ function checkHaveNotes(): boolean {
 }
 
 function getAllNotes(): Note[] {
-  // @ts-ignore
-  const notesArr: Note[] = JSON.parse(localStorage.getItem("notes"));
+  const notes: any = localStorage.getItem("notes");
+
+  let notesArr;
+  if (notes) {
+    notesArr = JSON.parse(notes);
+  }
 
   return notesArr;
 }
