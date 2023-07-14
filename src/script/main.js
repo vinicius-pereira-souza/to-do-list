@@ -29,13 +29,11 @@ function handleSubmitNote(e) {
 }
 function checkHaveNotes() {
     const arrNotes = getAllNotes();
-    if (arrNotes === null || arrNotes === void 0 ? void 0 : arrNotes.length) {
+    if ((arrNotes === null || arrNotes === void 0 ? void 0 : arrNotes.length) > 0) {
         emptyContainer.classList.remove("show-box");
-        return true;
     }
     else {
         emptyContainer.classList.add("show-box");
-        return false;
     }
 }
 function getAllNotes() {

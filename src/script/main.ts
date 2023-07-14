@@ -43,15 +43,13 @@ function handleSubmitNote(e: any) {
   container!.appendChild(createNoteComponent(note.text, note.id, note.check));
 }
 
-function checkHaveNotes(): boolean {
-  const arrNotes = getAllNotes();
+function checkHaveNotes(): void {
+  const arrNotes: Note[] | null = getAllNotes();
 
-  if (arrNotes?.length) {
+  if (arrNotes?.length > 0) {
     emptyContainer!.classList.remove("show-box");
-    return true;
   } else {
     emptyContainer!.classList.add("show-box");
-    return false;
   }
 }
 
