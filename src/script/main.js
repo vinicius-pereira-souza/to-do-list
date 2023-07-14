@@ -43,6 +43,9 @@ function getAllNotes() {
     if (notes) {
         notesArr = JSON.parse(notes);
     }
+    else {
+        notesArr = [];
+    }
     return notesArr;
 }
 function createNoteComponent(text, id, check) {
