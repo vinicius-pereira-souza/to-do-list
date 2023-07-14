@@ -26,7 +26,7 @@ function handleSubmitNote(e) {
 }
 function checkHaveNotes() {
     const arrNotes = getAllNotes();
-    if (arrNotes?.length) {
+    if (arrNotes === null || arrNotes === void 0 ? void 0 : arrNotes.length) {
         emptyContainer.classList.remove("show-box");
         return true;
     }
@@ -69,8 +69,9 @@ function createNoteComponent(text, id, check) {
     return div;
 }
 function renderAllNote() {
+    var _a;
     const notes = getAllNotes();
-    [...notes].forEach((note) => {
+    (_a = [...notes]) === null || _a === void 0 ? void 0 : _a.forEach((note) => {
         container.appendChild(createNoteComponent(note.text, note.id, note.check));
     });
 }
@@ -79,12 +80,12 @@ function deleteNote(id) {
     let notes = getAllNotes();
     notes = notes.filter((note) => note.id !== id);
     localStorage.setItem("notes", JSON.stringify(notes));
-    note?.remove();
+    note === null || note === void 0 ? void 0 : note.remove();
     checkHaveNotes();
 }
 function checkedInputValue(id, checked) {
     let notes = getAllNotes();
-    notes?.filter((note) => {
+    notes === null || notes === void 0 ? void 0 : notes.filter((note) => {
         if (note.id == id) {
             if (checked == true) {
                 return (note.check = true);
