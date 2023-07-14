@@ -18,7 +18,10 @@ function handleSubmitNote(e) {
             .toString(16)
             .substring(1),
     };
-    let newArr = [...notesAll, note];
+    let newArr;
+    if (notesAll) {
+        newArr = [...notesAll, note];
+    }
     localStorage.setItem("notes", JSON.stringify(newArr));
     input.value = "";
     checkHaveNotes();
@@ -69,9 +72,8 @@ function createNoteComponent(text, id, check) {
     return div;
 }
 function renderAllNote() {
-    var _a;
     const notes = getAllNotes();
-    (_a = [...notes]) === null || _a === void 0 ? void 0 : _a.forEach((note) => {
+    notes === null || notes === void 0 ? void 0 : notes.forEach((note) => {
         container.appendChild(createNoteComponent(note.text, note.id, note.check));
     });
 }
