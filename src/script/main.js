@@ -33,6 +33,7 @@ function checkHaveNotes() {
         emptyContainer.classList.remove("show-box");
     }
     else {
+        localStorage.setItem("notes", JSON.stringify([]));
         emptyContainer.classList.add("show-box");
     }
 }
