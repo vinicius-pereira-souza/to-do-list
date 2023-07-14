@@ -16,7 +16,7 @@ form!.addEventListener("submit", handleSubmitNote);
 
 function handleSubmitNote(e: { preventDefault: () => void }) {
   e.preventDefault();
-  const notesAll = getAllNotes();
+  const notesAll: Note[] | null = getAllNotes();
 
   if (!input!.value) {
     return;
@@ -101,7 +101,7 @@ function createNoteComponent(
 function renderAllNote(): void {
   const notes = getAllNotes();
 
-  [...notes].forEach((note: any) => {
+  [...notes]?.forEach((note: any) => {
     container!.appendChild(createNoteComponent(note.text, note.id, note.check));
   });
 }
