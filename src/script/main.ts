@@ -60,6 +60,8 @@ function getAllNotes(): Note[] | [] {
   let notesArr;
   if (notes) {
     notesArr = JSON.parse(notes);
+  } else {
+    notesArr = [];
   }
 
   return notesArr;
