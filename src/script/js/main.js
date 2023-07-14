@@ -7,6 +7,7 @@ let notes = [];
 form.addEventListener("submit", handleSubmitNote);
 function handleSubmitNote(e) {
     e.preventDefault();
+    const notesAll = getAllNotes();
     if (!input.value) {
         return;
     }
@@ -17,11 +18,11 @@ function handleSubmitNote(e) {
             .toString(16)
             .substring(1),
     };
-    let newArr = [...notes, note];
+    let newArr = [...notesAll, note];
     localStorage.setItem("notes", JSON.stringify(newArr));
-    checkHaveNotes();
-    renderAllNote();
     input.value = "";
+    checkHaveNotes();
+    container.appendChild(createNoteComponent(note.text, note.id, note.check));
 }
 function checkHaveNotes() {
     const arrNotes = getAllNotes();
@@ -55,14 +56,7 @@ function createNoteComponent(text, id, check) {
     }
     input.addEventListener("change", (e) => {
         const target = e.currentTarget;
-        if (target?.checked) {
-            p.classList.add("line-through");
-            p.classList.add("text-zinc-800");
-        }
-        else {
-            p.classList.remove("line-through");
-            p.classList.remove("text-zinc-800");
-        }
+        checkedInputValue(id, target.checked);
     });
     div.classList.add("box-note");
     div.setAttribute("id", id);
@@ -88,10 +82,16 @@ function deleteNote(id) {
     note?.remove();
     checkHaveNotes();
 }
-function checkNote(id, checked) {
+function checkedInputValue(id, checked) {
     let notes = getAllNotes();
-    notes = notes.filter((note) => {
-        if (note.id === id) {
+    notes?.filter((note) => {
+        if (note.id == id) {
+            if (checked == true) {
+                return (note.check = true);
+            }
+            else {
+                return (note.check = false);
+            }
         }
     });
     localStorage.setItem("notes", JSON.stringify(notes));
