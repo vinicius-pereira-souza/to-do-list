@@ -48,6 +48,7 @@ function checkHaveNotes(): void {
 
   if (arrNotes?.length > 0) {
     emptyContainer!.classList.remove("show-box");
+    return;
   } else {
     localStorage.setItem("notes", JSON.stringify([]));
     emptyContainer!.classList.add("show-box");
@@ -111,14 +112,17 @@ function createNoteComponent(
 function renderAllNote(): void {
   const notes = getAllNotes();
 
-  if (notes.length > 0) {
-    notes?.forEach((note: any) => {
-      container!.appendChild(
-        createNoteComponent(note.text, note.id, note.check),
-      );
-    });
+  try {
+    if (notes.length > 0) {
+      notes?.forEach((note: Note) => {
+        container!.appendChild(
+          createNoteComponent(note.text, note.id, note.check),
+        );
+      });
+    }
+  } catch (error) {
+    checkHaveNotes();
   }
-  checkHaveNotes();
 }
 
 function deleteNote(id: string) {
