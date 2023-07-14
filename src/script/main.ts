@@ -14,7 +14,7 @@ let notes: Note[] = [];
 
 form!.addEventListener("submit", handleSubmitNote);
 
-function handleSubmitNote(e: { preventDefault: () => void }) {
+function handleSubmitNote(e: any) {
   e.preventDefault();
   const notesAll: Note[] | null = getAllNotes();
 
@@ -30,7 +30,12 @@ function handleSubmitNote(e: { preventDefault: () => void }) {
       .substring(1),
   };
 
-  let newArr = [...notesAll, note];
+  let newArr;
+
+  if (notesAll) {
+    newArr = [...notesAll, note];
+  }
+
   localStorage.setItem("notes", JSON.stringify(newArr));
   input!.value = "";
   checkHaveNotes();
@@ -101,7 +106,7 @@ function createNoteComponent(
 function renderAllNote(): void {
   const notes = getAllNotes();
 
-  [...notes]?.forEach((note: any) => {
+  notes?.forEach((note: any) => {
     container!.appendChild(createNoteComponent(note.text, note.id, note.check));
   });
 }
