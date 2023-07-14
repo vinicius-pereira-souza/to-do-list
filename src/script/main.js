@@ -78,9 +78,12 @@ function createNoteComponent(text, id, check) {
 }
 function renderAllNote() {
     const notes = getAllNotes();
-    notes === null || notes === void 0 ? void 0 : notes.forEach((note) => {
-        container.appendChild(createNoteComponent(note.text, note.id, note.check));
-    });
+    if (notes.length > 0) {
+        notes === null || notes === void 0 ? void 0 : notes.forEach((note) => {
+            container.appendChild(createNoteComponent(note.text, note.id, note.check));
+        });
+    }
+    checkHaveNotes();
 }
 function deleteNote(id) {
     const note = document.getElementById(id);
