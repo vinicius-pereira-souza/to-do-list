@@ -49,11 +49,12 @@ function checkHaveNotes(): void {
   if (arrNotes?.length > 0) {
     emptyContainer!.classList.remove("show-box");
   } else {
+    localStorage.setItem("notes", JSON.stringify([]));
     emptyContainer!.classList.add("show-box");
   }
 }
 
-function getAllNotes(): Note[] {
+function getAllNotes(): Note[] | [] {
   const notes: any = localStorage.getItem("notes");
 
   let notesArr;
