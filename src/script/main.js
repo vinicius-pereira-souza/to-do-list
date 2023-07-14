@@ -31,6 +31,7 @@ function checkHaveNotes() {
     const arrNotes = getAllNotes();
     if ((arrNotes === null || arrNotes === void 0 ? void 0 : arrNotes.length) > 0) {
         emptyContainer.classList.remove("show-box");
+        return;
     }
     else {
         localStorage.setItem("notes", JSON.stringify([]));
@@ -78,12 +79,16 @@ function createNoteComponent(text, id, check) {
 }
 function renderAllNote() {
     const notes = getAllNotes();
-    if (notes.length > 0) {
-        notes === null || notes === void 0 ? void 0 : notes.forEach((note) => {
-            container.appendChild(createNoteComponent(note.text, note.id, note.check));
-        });
+    try {
+        if (notes.length > 0) {
+            notes === null || notes === void 0 ? void 0 : notes.forEach((note) => {
+                container.appendChild(createNoteComponent(note.text, note.id, note.check));
+            });
+        }
     }
-    checkHaveNotes();
+    catch (error) {
+        checkHaveNotes();
+    }
 }
 function deleteNote(id) {
     const note = document.getElementById(id);
